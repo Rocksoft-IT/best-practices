@@ -1,0 +1,102 @@
+App.js
+//////////
+
+import './App.css';
+import ArraysLogic from './ArraysLogic';
+import CounterLogic from "./CounterLogic";
+
+function App() {
+
+  const {counter, handleCounterIncrement} = CounterLogic();
+  const {handleChangeItem, element} = ArraysLogic();
+
+
+  //Splice element form an original array (XXXXX elements);
+  //Splice element form an copied array as save state old state => new array state array (XXXXX elements);
+
+  return (
+    <>
+    <div className="App">
+        <button onClick={() => {handleCounterIncrement()} }>Counter</button>
+        <div>{counter}</div>
+    </div>
+    <div>
+        Chosen element:
+        <div onClick={() => handleChangeItem(1)}>1</div>
+        <div onClick={() => handleChangeItem(2)}>2</div>
+        <div onClick={() => handleChangeItem(3)}>3</div>
+        {element && ( <span>{element.id}{element.name}</span>)}
+    </div>
+    </>
+  );
+}
+
+export default App;
+
+ArraysLogic.js
+/////////
+
+
+import { useState, useEffect } from "react";
+
+const ArraysLogic = () =>
+{
+    const [array, setArray] = useState([]);
+    const [itemId, setItemId] = useState();
+    const element = array && array.find((item) => item.id === itemId);
+ 
+    const testMethod = (array) =>{ 
+        return array.splice(1,1);
+    }   
+
+    const handleArray = () => {
+        setArray([{name: "Item1", id: 1}, {name: "Item2", id: 2}, {name: "Item3", id: 3}])
+        setArray((prevArray) => { testMethod(prevArray) })
+    }
+
+    useEffect(() => {
+        handleArray();
+    }, [])
+
+
+    const handleChangeItem = (int) => {
+        setItemId(int);
+    }
+
+    return { handleChangeItem, element }
+
+}
+export default ArraysLogic;
+
+CounterLogic.js
+//////////
+
+import { useEffect, useState } from "react";
+
+const CounterLogic = () =>
+{
+    const [counter, setCounter] = useState(0);
+
+    const handleCounterIncrement = () => {
+
+        setCounter((prevValue) => ++prevValue)
+    }
+
+    const projectId = 1;
+
+    const handleCounterIncrementTest = (number) => {
+
+    }
+
+    useEffect(() => {
+        if(!projectId)
+        {
+            return;
+        }
+        handleCounterIncrementTest(projectId)
+    }, [])
+
+    return { counter, handleCounterIncrement }
+}
+
+export default CounterLogic;
